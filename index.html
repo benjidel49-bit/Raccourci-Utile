@@ -190,7 +190,15 @@ footer{text-align:center;padding:10px 20px 30px;font-size:.9rem;opacity:.75}
     updateAuthUI();
     if(currentUser) await loadFromCloud(); else {document.getElementById("app").hidden=true; items=[]; render(); setStatus("Connecte-toi ou crée un compte pour accéder à tes raccourcis.");}
   }
+  function placeAuthBox(){
+    var box=document.getElementById("authbox"), main=document.getElementById("app");
+    if(!box||!main||!main.parentNode) return;
+    /* connecté : l'encadré passe sous les raccourcis ; déconnecté : il revient en haut */
+    if(currentUser) main.parentNode.insertBefore(box,main.nextSibling);
+    else main.parentNode.insertBefore(box,main);
+  }
   function updateAuthUI(){
+    placeAuthBox();
     var row=document.getElementById("auth-account-row");
     row.hidden=!currentUser;
     document.getElementById("auth-user").textContent=currentUser?currentUser.email:"";
